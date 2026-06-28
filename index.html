@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mes 5 Premiers Pas avec l'IA — Génération digitAi</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --purple: #534AB7; --purple-light: #EEEDFE; --purple-dark: #3C3489;
+    --green-light: #EAF3DE; --green-dark: #085041;
+    --text: #1A1A2E; --text-muted: #6B6B7B; --text-hint: #A0A0B0;
+    --bg: #F7F6FF; --surface: #FFFFFF;
+    --border: rgba(0,0,0,0.08); --border-hover: #AFA9EC;
+    --radius: 12px; --radius-sm: 8px;
+  }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .top-bar { background: var(--purple); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { color: #fff; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .brand-sub { color: rgba(255,255,255,0.65); font-size: 12px; font-weight: 400; }
+
+  .hero { background: linear-gradient(135deg, var(--purple) 0%, #7F77DD 100%); padding: 40px 24px 52px; text-align: center; color: #fff; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.18); border-radius: 20px; padding: 5px 14px; font-size: 12px; margin-bottom: 16px; }
+  .hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+  .hero p { font-size: 14px; color: rgba(255,255,255,0.8); max-width: 460px; margin: 0 auto; }
+
+  .main { max-width: 700px; margin: -24px auto 0; padding: 0 16px 48px; }
+
+  /* STEPPER */
+  .stepper { display: flex; align-items: center; justify-content: center; gap: 0; padding: 20px 0 24px; overflow-x: auto; }
+  .step-dot { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; min-width: 52px; }
+  .dot-circle { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--text-muted); transition: all .2s; position: relative; z-index: 1; }
+  .dot-circle.done { background: var(--purple); border-color: var(--purple); color: #fff; }
+  .dot-circle.active { background: var(--purple); border-color: var(--purple); color: #fff; box-shadow: 0 0 0 4px rgba(83,74,183,0.2); }
+  .dot-label { font-size: 11px; color: var(--text-hint); text-align: center; max-width: 52px; line-height: 1.2; }
+  .dot-label.active { color: var(--purple); font-weight: 600; }
+  .step-line { flex: 1; height: 2px; background: var(--border); min-width: 20px; max-width: 48px; transition: background .3s; }
+  .step-line.done { background: var(--purple); }
+
+  /* CARD */
+  .content-card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(83,74,183,0.06); }
+  .step-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .step-emoji { font-size: 36px; line-height: 1; }
+  .step-tag { font-size: 11px; font-weight: 700; color: var(--purple); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+  .step-name { font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .explanation { font-size: 15px; color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; }
+  .analogy-box { background: var(--purple-light); border-radius: var(--radius-sm); padding: 14px 16px; font-size: 14px; color: var(--purple-dark); margin-bottom: 16px; line-height: 1.6; }
+  .key-points { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .key-points li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.5; }
+  .kp-icon { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+
+  /* EXERCISE */
+  .exercise-block { background: var(--bg); border-radius: var(--radius-sm); padding: 16px; }
+  .ex-title { font-size: 12px; font-weight: 700; color: var(--purple); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .ex-desc { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 12px; }
+  .ex-input { width: 100%; border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 14px; font-family: inherit; background: var(--surface); color: var(--text); resize: none; min-height: 80px; }
+  .ex-input:focus { outline: none; border-color: var(--purple); }
+  .ex-btn { background: var(--purple); color: #fff; border: none; border-radius: var(--radius-sm); padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: all .15s; font-family: inherit; }
+  .ex-btn:hover:not(:disabled) { background: var(--purple-dark); }
+  .ex-btn:disabled { opacity: .6; cursor: not-allowed; }
+  .ex-result { margin-top: 12px; background: var(--surface); border-left: 3px solid var(--purple); border-radius: var(--radius-sm); padding: 14px; font-size: 14px; color: var(--text); line-height: 1.7; display: none; }
+
+  /* NAV */
+  .nav-row { display: flex; gap: 10px; margin-bottom: 16px; }
+  .btn-prev { flex: 1; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 13px; font-size: 14px; cursor: pointer; color: var(--text-muted); font-family: inherit; }
+  .btn-prev:hover { background: var(--purple-light); color: var(--purple); border-color: var(--border-hover); }
+  .btn-next { flex: 2; background: var(--purple); color: #fff; border: none; border-radius: var(--radius-sm); padding: 13px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .15s; }
+  .btn-next:hover { background: var(--purple-dark); }
+
+  /* CERTIF */
+  .certif-card { background: linear-gradient(135deg, var(--purple) 0%, #7F77DD 100%); border-radius: var(--radius); padding: 40px 24px; text-align: center; color: #fff; margin-bottom: 16px; }
+  .certif-icon { font-size: 56px; margin-bottom: 16px; }
+  .certif-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .certif-sub { font-size: 14px; opacity: .8; margin-bottom: 20px; }
+  .certif-name { font-size: 15px; font-weight: 600; background: rgba(255,255,255,.15); border-radius: var(--radius-sm); padding: 10px 24px; display: inline-block; margin-bottom: 20px; }
+  .certif-msg { font-size: 14px; opacity: .85; line-height: 1.7; max-width: 440px; margin: 0 auto 20px; }
+  .share-btn { background: rgba(255,255,255,.2); border: 1.5px solid rgba(255,255,255,.4); border-radius: var(--radius-sm); color: #fff; padding: 12px 24px; font-size: 14px; cursor: pointer; font-family: inherit; }
+  .share-btn:hover { background: rgba(255,255,255,.3); }
+
+  .spinner { width: 20px; height: 20px; border: 2.5px solid rgba(83,74,183,0.2); border-top-color: var(--purple); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto; }
+  .spinner-sm { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; display: inline-block; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hidden { display: none !important; }
+  .footer { text-align: center; padding: 24px; font-size: 12px; color: var(--text-hint); border-top: 1px solid var(--border); margin-top: 8px; }
+  .footer span { color: var(--purple); font-weight: 600; }
+
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 20px; }
+    .content-card { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="brand"><i class="ti ti-footprint"></i> Génération digitAi <span class="brand-sub">by Ayoub le GOAiT</span></div>
+  <div style="color:rgba(255,255,255,0.6);font-size:12px;">Portfolio Project #3</div>
+</div>
+
+<div class="hero">
+  <div class="hero-badge"><i class="ti ti-footprint"></i> Guide Interactif Débutante</div>
+  <h1>Mes 5 premiers pas avec l'IA</h1>
+  <p>Un parcours guidé pour passer de zéro à ta première vraie tâche avec l'intelligence artificielle</p>
+</div>
+
+<div class="main">
+  <div class="stepper" id="stepper"></div>
+  <div id="step-content"></div>
+  <div class="nav-row" id="nav-row">
+    <button class="btn-prev" id="btn-prev" onclick="goStep(cur-1)">← Précédent</button>
+    <button class="btn-next" id="btn-next" onclick="goNext()">Suivant →</button>
+  </div>
+  <div id="certif-screen" class="hidden">
+    <div class="certif-card">
+      <div class="certif-icon">🎓</div>
+      <div class="certif-title">Félicitations !</div>
+      <div class="certif-sub">Tu as complété les 5 premiers pas avec l'IA</div>
+      <div class="certif-name">Apprenante Génération digitAi</div>
+      <div class="certif-msg" id="certif-msg"><span class="spinner-sm"></span> Génération de ton message personnalisé…</div>
+      <button class="share-btn" onclick="restart()"><i class="ti ti-refresh"></i> Recommencer le guide</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Créé avec <span>Génération digitAi</span> — Formation IA pour les jeunes d'Afrique francophone<br>
+  Projet portfolio — Claude API (Anthropic) × JavaScript
+</div>
+
+<script>
+const STEPS = [
+  {
+    emoji: "🤔", tag: "Étape 1", name: "Comprendre ce qu'est l'IA",
+    explanation: "L'Intelligence Artificielle (IA), c'est un programme informatique capable d'apprendre et de réaliser des tâches qui demandent normalement de l'intelligence humaine — comme comprendre du texte, répondre à des questions ou créer des images.",
+    analogy: "💡 Imagine une employée très rapide qui a lu des millions de livres, d'articles et de conversations. Quand tu lui poses une question, elle cherche dans toute sa mémoire pour te donner la meilleure réponse possible. C'est exactement ce que fait une IA conversationnelle.",
+    points: [
+      {icon:"✅", text:"L'IA peut rédiger, traduire, résumer, expliquer, créer des images, coder…"},
+      {icon:"✅", text:"Elle est disponible 24h/24 et répond en quelques secondes"},
+      {icon:"⚠️", text:"Elle peut se tromper — il faut toujours vérifier les informations importantes"},
+      {icon:"⚠️", text:"Elle n'a pas de conscience ni d'émotions, c'est un outil puissant mais c'est tout"}
+    ],
+    exercise: {
+      title: "✏️ Exercice 1 — Teste ta compréhension",
+      desc: "En tes propres mots, explique à une amie ce qu'est l'IA. Écris 2-3 phrases simples ci-dessous :",
+      placeholder: "Ex : L'IA c'est comme une assistante très intelligente sur mon téléphone qui peut…",
+      aiPrompt: (val) => `Une femme africaine débutante vient d'expliquer l'IA en ses propres mots : "${val}"\n\nDonne-lui un retour encourageant en 2-3 phrases : valorise ce qu'elle a bien saisi, corrige doucement si besoin, et ajoute une analogie simple du quotidien africain. Sois chaleureuse et motivante.`
+    }
+  },
+  {
+    emoji: "🔑", tag: "Étape 2", name: "Créer ton premier compte IA",
+    explanation: "Pour utiliser l'IA, tu dois créer un compte sur une des plateformes disponibles. Les deux plus accessibles en Afrique francophone sont ChatGPT (d'OpenAI) et Claude (d'Anthropic). Les deux sont gratuits pour commencer.",
+    analogy: "💡 C'est comme créer un compte WhatsApp : tu as besoin d'une adresse email, d'un mot de passe, et c'est parti. La création prend moins de 2 minutes.",
+    points: [
+      {icon:"🟢", text:"ChatGPT → chatgpt.com — Version gratuite disponible, idéale pour débuter"},
+      {icon:"🔵", text:"Claude → claude.ai — Très bon pour la rédaction et les textes longs en français"},
+      {icon:"💡", text:"Tu peux créer les deux comptes ! Ils sont complémentaires"},
+      {icon:"✅", text:"Utilise une adresse Gmail — aucune carte bancaire requise pour les versions gratuites"}
+    ],
+    exercise: {
+      title: "✏️ Exercice 2 — Choisis ton outil",
+      desc: "Quel outil IA vas-tu créer en premier, et pourquoi ? Justifie ton choix en 1-2 phrases :",
+      placeholder: "Je vais commencer par ChatGPT parce que…",
+      aiPrompt: (val) => `Une femme africaine débutante vient de choisir son premier outil IA : "${val}"\n\nDonne-lui un encouragement personnalisé, confirme si son choix est bon pour son contexte (Afrique francophone, mobile, gratuit), et donne-lui 1 conseil pratique pour la création de compte. Sois concise et motivante.`
+    }
+  },
+  {
+    emoji: "✍️", tag: "Étape 3", name: "Écrire ton premier prompt",
+    explanation: "Un prompt, c'est le message que tu écris à l'IA. La qualité de ta réponse dépend directement de la qualité de ton prompt. Un bon prompt est clair, précis, et contient du contexte.",
+    analogy: "💡 C'est comme donner des instructions à quelqu'un de très compétent mais qui ne te connaît pas encore. Plus tu es précise sur ce que tu veux, meilleur sera le résultat. 'Fais-moi un gâteau' donne moins de résultats que 'Fais-moi un gâteau au chocolat pour 8 personnes, sans œufs'.",
+    points: [
+      {icon:"❌", text:"Mauvais prompt : 'Aide-moi avec mon travail' → trop vague"},
+      {icon:"✅", text:"Bon prompt : 'Rédige un email professionnel pour demander un rendez-vous à un client qui n'a pas répondu depuis 2 semaines'"},
+      {icon:"💡", text:"Structure gagnante : QUI tu es + QUOI tu veux + CONTEXTE"},
+      {icon:"🔑", text:"Tu peux écrire en français — ChatGPT et Claude comprennent très bien le français"}
+    ],
+    exercise: {
+      title: "✏️ Exercice 3 — Écris ton premier vrai prompt",
+      desc: "Pense à quelque chose que tu veux accomplir. Écris un prompt complet ci-dessous :",
+      placeholder: "Ex : Tu es un expert en RH. Aide-moi à rédiger un CV pour un poste de vendeuse à Cotonou. J'ai 3 ans d'expérience en commerce mais pas de formation formelle…",
+      aiPrompt: (val) => `Une femme africaine débutante vient d'écrire ce prompt IA : "${val}"\n\nAnalyse son prompt et donne-lui :\n1. Un score de qualité sur 5 étoiles\n2. Ce qu'elle a bien fait\n3. Une seule suggestion d'amélioration concrète\n4. La version améliorée de son prompt\n\nSois encourageante et pédagogique. Contexte africain francophone.`
+    }
+  },
+  {
+    emoji: "🔍", tag: "Étape 4", name: "Vérifier et améliorer les réponses",
+    explanation: "L'IA donne de bonnes réponses, mais elle peut parfois inventer des informations. Cela s'appelle une 'hallucination'. Tu dois toujours garder ton esprit critique activé, surtout pour les informations importantes.",
+    analogy: "💡 Imagine que tu demandes à une amie très intelligente de t'aider. Elle fera de son mieux, mais elle peut parfois confondre des détails. Tu ne vas pas tout croire sans vérifier — c'est pareil avec l'IA.",
+    points: [
+      {icon:"⚠️", text:"Ne fais pas confiance aveuglément pour : chiffres officiels, lois, informations médicales"},
+      {icon:"✅", text:"L'IA est fiable pour : brouillons de texte, idées créatives, explications, organisation"},
+      {icon:"💡", text:"Astuce : si une info te semble douteuse, demande à l'IA de te donner ses sources"},
+      {icon:"🔑", text:"Tu peux aussi demander à l'IA de 'vérifier' son propre travail"}
+    ],
+    exercise: {
+      title: "✏️ Exercice 4 — Teste ton esprit critique",
+      desc: "Donne un exemple de situation où tu NE ferais PAS confiance à l'IA sans vérifier, et pourquoi :",
+      placeholder: "Je ne ferais pas confiance à l'IA si elle me donne… parce que…",
+      aiPrompt: (val) => `Une femme africaine débutante explique quand elle ne ferait pas confiance à l'IA : "${val}"\n\nValide ou nuance sa réponse en 2-3 phrases. Donne-lui 1 règle pratique supplémentaire pour garder son esprit critique face à l'IA. Sois pédagogique et encourageante.`
+    }
+  },
+  {
+    emoji: "🚀", tag: "Étape 5", name: "Ta première tâche concrète",
+    explanation: "Tu es prête ! Il est temps de réaliser ta première vraie tâche avec l'IA. Commence par quelque chose de simple et utile dans ta vie quotidienne ou professionnelle.",
+    analogy: "💡 Comme apprendre à conduire : tu n'apprendras pas en lisant des livres sur la conduite. Tu apprends en conduisant — d'abord doucement, puis de plus en plus vite. Avec l'IA, c'est pareil. Lance-toi !",
+    points: [
+      {icon:"🎯", text:"Idée 1 : Demande à l'IA de rédiger un message WhatsApp professionnel aujourd'hui"},
+      {icon:"🎯", text:"Idée 2 : Explique-lui ton activité et demande 5 idées pour trouver plus de clients"},
+      {icon:"🎯", text:"Idée 3 : Demande-lui de corriger et améliorer un texte que tu as déjà écrit"},
+      {icon:"💡", text:"Conseil : Utilise l'IA au moins une fois par jour pendant 7 jours — tu seras étonnée !"}
+    ],
+    exercise: {
+      title: "✏️ Exercice Final — Ta première mission IA",
+      desc: "Décris la première tâche concrète que tu vas faire avec l'IA aujourd'hui ou demain :",
+      placeholder: "Demain matin je vais utiliser ChatGPT pour… parce que cela va m'aider à…",
+      aiPrompt: (val) => `Une femme africaine débutante vient de terminer le guide "5 premiers pas avec l'IA". Sa première mission : "${val}"\n\nRédige un message de félicitations personnalisé et motivant (3-4 phrases), valide son plan d'action, et donne-lui UN conseil bonus pour réussir cette première mission. Sois chaleureuse, contexte africain francophone.`
+    }
+  }
+];
+
+let cur = 0;
+const exerciseResults = {};
+
+function renderStepper() {
+  const el = document.getElementById('stepper');
+  let html = '';
+  STEPS.forEach((s,i) => {
+    const isDone = i < cur, isActive = i === cur;
+    html += `<div class="step-dot" onclick="goStep(${i})">
+      <div class="dot-circle ${isDone?'done':isActive?'active':''}">${isDone?'✓':(i+1)}</div>
+      <div class="dot-label ${isActive?'active':''}">${s.emoji}</div>
+    </div>`;
+    if (i < STEPS.length-1) html += `<div class="step-line ${isDone?'done':''}"></div>`;
+  });
+  el.innerHTML = html;
+}
+
+function renderStep() {
+  const s = STEPS[cur];
+  const hasResult = exerciseResults[cur];
+  document.getElementById('step-content').innerHTML = `
+    <div class="content-card">
+      <div class="step-header">
+        <div class="step-emoji">${s.emoji}</div>
+        <div>
+          <div class="step-tag">${s.tag} sur 5</div>
+          <div class="step-name">${s.name}</div>
+        </div>
+      </div>
+      <div class="explanation">${s.explanation}</div>
+      <div class="analogy-box">${s.analogy}</div>
+      <ul class="key-points">${s.points.map(p=>`<li><span class="kp-icon">${p.icon}</span>${p.text}</li>`).join('')}</ul>
+      <div class="exercise-block">
+        <div class="ex-title"><i class="ti ti-pencil"></i> ${s.exercise.title}</div>
+        <div class="ex-desc">${s.exercise.desc}</div>
+        <textarea class="ex-input" id="ex-input" placeholder="${s.exercise.placeholder}">${hasResult?.input||''}</textarea>
+        <button class="ex-btn" id="ex-btn" onclick="runExercise()"><i class="ti ti-wand"></i> Obtenir un retour IA</button>
+        <div class="ex-result" id="ex-result" style="${hasResult?'display:block':''}">${hasResult?.output||''}</div>
+      </div>
+    </div>`;
+  document.getElementById('btn-prev').style.display = cur === 0 ? 'none' : 'block';
+  document.getElementById('btn-next').textContent = cur === STEPS.length-1 ? '🎓 Terminer le guide' : 'Suivant →';
+}
+
+async function runExercise() {
+  const val = document.getElementById('ex-input').value.trim();
+  if (!val) return;
+  const btn = document.getElementById('ex-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle"></span> Analyse en cours…';
+  const res_el = document.getElementById('ex-result');
+  res_el.style.display = 'none';
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6', max_tokens:400,
+        system:'Tu es une formatrice IA bienveillante et experte, spécialisée dans la formation des femmes africaines débutantes. Tes retours sont toujours encourageants, concrets et adaptés au contexte africain francophone.',
+        messages:[{role:'user',content:STEPS[cur].exercise.aiPrompt(val)}]
+      })
+    });
+    const data = await resp.json();
+    const output = data.content[0].text;
+    exerciseResults[cur] = {input: val, output};
+    res_el.textContent = output;
+    res_el.style.display = 'block';
+  } catch(e) {
+    res_el.textContent = 'Super ! Continue comme ça et passe à l\'étape suivante.';
+    res_el.style.display = 'block';
+  }
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-wand"></i> Obtenir un retour IA';
+}
+
+function goStep(idx) {
+  if (idx < 0 || idx >= STEPS.length) return;
+  cur = idx;
+  renderStepper(); renderStep();
+}
+
+async function goNext() {
+  if (cur === STEPS.length-1) { showCertif(); return; }
+  goStep(cur+1);
+}
+
+async function showCertif() {
+  document.getElementById('step-content').classList.add('hidden');
+  document.getElementById('nav-row').classList.add('hidden');
+  document.getElementById('certif-screen').classList.remove('hidden');
+  const lastInput = exerciseResults[4]?.input || '';
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6', max_tokens:200,
+        system:'Tu es une formatrice IA motivante pour femmes africaines. Génère un message de félicitations court (3 phrases max), chaleureux et motivant.',
+        messages:[{role:'user',content:`La participante a complété les 5 étapes. Son projet IA : "${lastInput||'utiliser l\'IA dans sa vie quotidienne'}". Génère le message de félicitations.`}]
+      })
+    });
+    const data = await resp.json();
+    document.getElementById('certif-msg').textContent = data.content[0].text;
+  } catch(e) {
+    document.getElementById('certif-msg').textContent = 'Tu viens de franchir une étape importante ! L\'IA est maintenant ton alliée. Continue à pratiquer chaque jour et tu seras étonnée de ta progression !';
+  }
+}
+
+function restart() {
+  cur = 0;
+  Object.keys(exerciseResults).forEach(k => delete exerciseResults[k]);
+  document.getElementById('certif-screen').classList.add('hidden');
+  document.getElementById('step-content').classList.remove('hidden');
+  document.getElementById('nav-row').classList.remove('hidden');
+  renderStepper(); renderStep();
+}
+
+renderStepper(); renderStep();
+</script>
+</body>
+</html>
